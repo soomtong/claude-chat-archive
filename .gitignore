@@ -6,11 +6,11 @@ out
 dist
 *.tgz
 
-# source
-projects/
-conversations.json
-memories.json
-users.json
+# source (user export data — not the test fixtures)
+/projects/
+/conversations.json
+/memories.json
+/users.json
 
 # code coverage
 coverage

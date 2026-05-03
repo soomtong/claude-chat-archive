@@ -1,0 +1,23 @@
+[
+  {
+    "uuid": "conv-1",
+    "name": "First chat",
+    "summary": "test",
+    "created_at": "2026-01-01T00:00:00Z",
+    "updated_at": "2026-01-01T00:00:00Z",
+    "account": { "uuid": "acc-1" },
+    "chat_messages": [
+      {
+        "uuid": "msg-1",
+        "text": "hello",
+        "sender": "human",
+        "created_at": "2026-01-01T00:00:00Z",
+        "updated_at": "2026-01-01T00:00:00Z",
+        "content": [{ "type": "text", "text": "hello" }],
+        "attachments": [],
+        "files": [],
+        "parent_message_uuid": "00000000-0000-4000-8000-000000000000"
+      }
+    ]
+  }
+]
