@@ -2,6 +2,7 @@ import { join } from "node:path";
 import type { Config, RunStats } from "./types.ts";
 import { loadConversations } from "./reader/conversations.ts";
 import { loadProjects } from "./reader/projects.ts";
+import { isEmptyConversation } from "./transform/conversation.ts";
 import { writeChat } from "./writer/chat.ts";
 import { writeProject } from "./writer/project.ts";
 
@@ -11,6 +12,7 @@ export async function archive(cfg: Config): Promise<RunStats> {
   const stats: RunStats = {
     chatsTotal: 0,
     chatsWritten: 0,
+    chatsEmpty: 0,
     chatsSkipped: 0,
     projectsTotal: 0,
     projectsWritten: 0,
@@ -26,6 +28,10 @@ export async function archive(cfg: Config): Promise<RunStats> {
     const convs = await loadConversations(join(cfg.inputDir, "conversations.json"));
     stats.chatsTotal = convs.length;
     for (const c of convs) {
+      if (isEmptyConversation(c)) {
+        stats.chatsEmpty += 1;
+        continue;
+      }
       try {
         const r = await writeChat(c, cfg, used);
         stats.chatsWritten += 1;

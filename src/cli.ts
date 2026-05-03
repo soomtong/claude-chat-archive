@@ -42,7 +42,7 @@ async function main(argv: string[]): Promise<number> {
     const stats = await archive(cfg);
     process.stdout.write(
       `\nDone. chats: ${stats.chatsWritten}/${stats.chatsTotal} ` +
-        `(${stats.chatsSkipped} skipped), ` +
+        `(${stats.chatsEmpty} empty, ${stats.chatsSkipped} skipped), ` +
         `projects: ${stats.projectsWritten}/${stats.projectsTotal}, ` +
         `attachments: ${stats.attachmentsInline} inline, ` +
         `${stats.attachmentsExternal} external, ` +

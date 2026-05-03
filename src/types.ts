@@ -85,6 +85,7 @@ export interface Config {
 export interface RunStats {
   chatsTotal: number;
   chatsWritten: number;
+  chatsEmpty: number;
   chatsSkipped: number;
   projectsTotal: number;
   projectsWritten: number;
