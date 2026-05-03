@@ -1,0 +1,10 @@
+src/
+test/
+docs/
+projects/
+*.json
+!package.json
+node_modules/
+.cursor/
+CLAUDE.md
+.claude/
