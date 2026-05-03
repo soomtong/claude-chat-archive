@@ -1,5 +1,6 @@
 import type { Config, ExportContent, ExportMessage, ContentMode } from "../types.ts";
 import { decideAttachmentPlacement, renderAttachment, renderMissingFile } from "./attachment.ts";
+import { ensureExtension, extFromArtifact, sniffExtFromContent } from "./extension.ts";
 import { formatKnownTool } from "./tool-formatter.ts";
 import { formatKnownToolResult, shouldSkipToolResult } from "./tool-result-formatter.ts";
 
@@ -77,7 +78,8 @@ function extractCreatedFile(content: ExportContent): ExtractedFile | null {
     const path = typeof input.path === "string" ? input.path : "";
     const fileText = typeof input.file_text === "string" ? input.file_text : null;
     if (!fileText) return null;
-    const fileName = path ? basename(path) : "untitled.txt";
+    const rawName = path ? basename(path) : "untitled";
+    const fileName = ensureExtension(rawName, sniffExtFromContent(fileText));
     const description = typeof input.description === "string" ? input.description : undefined;
     return { fileName, content: fileText, description };
   }
@@ -89,7 +91,10 @@ function extractCreatedFile(content: ExportContent): ExtractedFile | null {
     if (!text) return null;
     const title = typeof input.title === "string" ? input.title : null;
     const id = typeof input.id === "string" ? input.id : "artifact";
-    const fileName = title || id;
+    const type = typeof input.type === "string" ? input.type : "";
+    const language = typeof input.language === "string" ? input.language : "";
+    const ext = type ? extFromArtifact(type, language) : sniffExtFromContent(text);
+    const fileName = ensureExtension(title || id, ext);
     return { fileName, content: text };
   }
 

@@ -233,7 +233,7 @@ describe("renderMessage — created files (create_file)", () => {
     expect(markdown).not.toContain("file_text");
   });
 
-  test("extracts artifacts content with create command", () => {
+  test("extracts artifacts content with create command (typescript)", () => {
     const msg = assistant([
       {
         type: "tool_use",
@@ -241,6 +241,7 @@ describe("renderMessage — created files (create_file)", () => {
         input: {
           id: "demo",
           type: "application/vnd.ant.code",
+          language: "typescript",
           title: "Demo Code",
           command: "create",
           content: "console.log('hi')",
@@ -249,9 +250,52 @@ describe("renderMessage — created files (create_file)", () => {
     ]);
     const { markdown, createdFiles } = renderMessage(msg, baseConfig, "chat-uuid");
     expect(createdFiles).toHaveLength(1);
-    expect(createdFiles[0]!.fileName).toBe("Demo Code");
+    expect(createdFiles[0]!.fileName).toBe("Demo Code.ts");
     expect(createdFiles[0]!.content).toBe("console.log('hi')");
-    expect(markdown).toContain("📝 [Demo Code](../created/chat-uuid/Demo Code)");
+    expect(markdown).toContain("📝 [Demo Code.ts](../created/chat-uuid/Demo Code.ts)");
+  });
+
+  test("extensionless create_file path gets extension sniffed from content", () => {
+    const msg = assistant([
+      {
+        type: "tool_use",
+        name: "create_file",
+        input: { path: "", file_text: "# Heading\n\nbody" },
+      },
+    ]);
+    const { createdFiles, markdown } = renderMessage(msg, baseConfig, "chat-uuid");
+    expect(createdFiles[0]!.fileName).toBe("untitled.md");
+    expect(markdown).toContain("untitled.md");
+  });
+
+  test("artifacts text/markdown gets .md", () => {
+    const msg = assistant([
+      {
+        type: "tool_use",
+        name: "artifacts",
+        input: {
+          id: "doc",
+          type: "text/markdown",
+          title: "강의 노트",
+          command: "create",
+          content: "# 강의\n\n내용",
+        },
+      },
+    ]);
+    const { createdFiles } = renderMessage(msg, baseConfig, "chat-uuid");
+    expect(createdFiles[0]!.fileName).toBe("강의 노트.md");
+  });
+
+  test("create_file with existing extension is left untouched", () => {
+    const msg = assistant([
+      {
+        type: "tool_use",
+        name: "create_file",
+        input: { path: "/x/note.md", file_text: "anything" },
+      },
+    ]);
+    const { createdFiles } = renderMessage(msg, baseConfig, "chat-uuid");
+    expect(createdFiles[0]!.fileName).toBe("note.md");
   });
 
   test("artifacts with non-create command falls back to default tool render", () => {
