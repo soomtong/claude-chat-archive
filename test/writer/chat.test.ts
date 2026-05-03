@@ -71,21 +71,13 @@ describe("writeChat", () => {
 
   test("dry-run writes nothing", async () => {
     const used = new Set<string>();
-    await writeChat(
-      conv,
-      { ...cfg, inputDir: "/in", outputDir: outDir, dryRun: true },
-      used,
-    );
+    await writeChat(conv, { ...cfg, inputDir: "/in", outputDir: outDir, dryRun: true }, used);
     await expect(readdir(join(outDir, "chats"))).rejects.toThrow();
   });
 
   test("returns stats counts", async () => {
     const used = new Set<string>();
-    const stats = await writeChat(
-      conv,
-      { ...cfg, inputDir: "/in", outputDir: outDir },
-      used,
-    );
+    const stats = await writeChat(conv, { ...cfg, inputDir: "/in", outputDir: outDir }, used);
     expect(stats.inline).toBe(0);
     expect(stats.external).toBe(0);
     expect(stats.missing).toBe(0);

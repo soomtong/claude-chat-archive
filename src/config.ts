@@ -23,9 +23,7 @@ export function parseConfig(argv: string[]): Config {
   });
 
   if (positionals.length === 0) {
-    throw new Error(
-      "usage: claude-chat-archive <input-dir> [output-dir] [options]",
-    );
+    throw new Error("usage: claude-chat-archive <input-dir> [output-dir] [options]");
   }
 
   const mode = values.mode as ContentMode;
@@ -38,18 +36,13 @@ export function parseConfig(argv: string[]): Config {
     throw new Error(`scope must be one of: ${VALID_SCOPES.join(", ")}`);
   }
 
-  const threshold = Number.parseInt(
-    values["attachment-threshold"] as string,
-    10,
-  );
+  const threshold = Number.parseInt(values["attachment-threshold"] as string, 10);
   if (!Number.isFinite(threshold) || threshold < 0) {
     throw new Error("attachment-threshold must be a non-negative integer");
   }
 
   const inputDir = resolve(positionals[0]!);
-  const outputDir = positionals[1]
-    ? resolve(positionals[1])
-    : `${inputDir}/output`;
+  const outputDir = positionals[1] ? resolve(positionals[1]) : `${inputDir}/output`;
 
   return {
     inputDir,

@@ -1,8 +1,5 @@
 import { test, expect, describe } from "bun:test";
-import {
-  renderAttachment,
-  decideAttachmentPlacement,
-} from "../../src/transform/attachment.ts";
+import { renderAttachment, decideAttachmentPlacement } from "../../src/transform/attachment.ts";
 import type { ExportAttachment } from "../../src/types.ts";
 
 const att = (overrides: Partial<ExportAttachment>): ExportAttachment => ({
@@ -27,9 +24,7 @@ describe("decideAttachmentPlacement", () => {
     expect(decideAttachmentPlacement(a, 4096)).toBe("external");
   });
   test("inline when content is empty", () => {
-    expect(decideAttachmentPlacement(att({ extracted_content: "" }), 4096)).toBe(
-      "inline",
-    );
+    expect(decideAttachmentPlacement(att({ extracted_content: "" }), 4096)).toBe("inline");
   });
 });
 
@@ -42,9 +37,7 @@ describe("renderAttachment", () => {
 
   test("renders external as relative link", () => {
     const md = renderAttachment(att({}), "external", "chat-uuid", "../attachments");
-    expect(md).toBe(
-      "📎 [note.txt](../attachments/chat-uuid/note.txt) (100 bytes)",
-    );
+    expect(md).toBe("📎 [note.txt](../attachments/chat-uuid/note.txt) (100 bytes)");
   });
 
   test("uses fallback name when file_name is empty (inline)", () => {

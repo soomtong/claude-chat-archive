@@ -39,9 +39,7 @@ const projectWithDocs: ExportProject = {
   ...projectNoDocs,
   uuid: "p2",
   name: "How to use Claude",
-  docs: [
-    { uuid: "d1", filename: "guide.md", content: "# Guide content" },
-  ],
+  docs: [{ uuid: "d1", filename: "guide.md", content: "# Guide content" }],
 };
 
 describe("writeProject", () => {
@@ -65,10 +63,12 @@ describe("writeProject", () => {
   });
 
   test("dry-run writes nothing", async () => {
-    await writeProject(
-      projectWithDocs,
-      { ...cfg, inputDir: "/in", outputDir: outDir, dryRun: true },
-    );
+    await writeProject(projectWithDocs, {
+      ...cfg,
+      inputDir: "/in",
+      outputDir: outDir,
+      dryRun: true,
+    });
     await expect(readdir(join(outDir, "projects"))).rejects.toThrow();
   });
 });

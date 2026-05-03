@@ -1,8 +1,5 @@
 import { test, expect, describe } from "bun:test";
-import {
-  sanitizeFilename,
-  conversationFilename,
-} from "../../src/transform/filename.ts";
+import { sanitizeFilename, conversationFilename } from "../../src/transform/filename.ts";
 import type { ExportConversation } from "../../src/types.ts";
 
 describe("sanitizeFilename", () => {
@@ -10,9 +7,7 @@ describe("sanitizeFilename", () => {
     expect(sanitizeFilename("프로그래밍 강의")).toBe("프로그래밍 강의");
   });
   test("replaces filesystem-forbidden chars with underscore", () => {
-    expect(sanitizeFilename('a/b\\c:d*e?f"g<h>i|j')).toBe(
-      "a_b_c_d_e_f_g_h_i_j",
-    );
+    expect(sanitizeFilename('a/b\\c:d*e?f"g<h>i|j')).toBe("a_b_c_d_e_f_g_h_i_j");
   });
   test("trims whitespace", () => {
     expect(sanitizeFilename("  hello  ")).toBe("hello");

@@ -1,11 +1,6 @@
 export type Sender = "human" | "assistant";
 
-export type ContentType =
-  | "text"
-  | "thinking"
-  | "tool_use"
-  | "tool_result"
-  | "token_budget";
+export type ContentType = "text" | "thinking" | "tool_use" | "tool_result" | "token_budget";
 
 export interface ExportContent {
   type: ContentType;

@@ -26,7 +26,13 @@ const human = (text: string): ExportMessage => ({
 });
 
 const assistant = (
-  parts: { type: "text" | "thinking" | "tool_use" | "tool_result" | "token_budget"; text?: string; name?: string; input?: unknown; budget?: number }[],
+  parts: {
+    type: "text" | "thinking" | "tool_use" | "tool_result" | "token_budget";
+    text?: string;
+    name?: string;
+    input?: unknown;
+    budget?: number;
+  }[],
 ): ExportMessage => ({
   uuid: "a1",
   text: parts.find((p) => p.type === "text")?.text ?? "",
@@ -95,14 +101,12 @@ describe("renderMessage — assistant", () => {
       baseConfig,
       "chat-uuid",
     );
-    expect(markdown).toContain("🔧 `Read({\"file_path\":\"/src/foo.ts\"})`");
+    expect(markdown).toContain('🔧 `Read({"file_path":"/src/foo.ts"})`');
   });
 
   test("full mode renders tool_use as code block", () => {
     const { markdown } = renderMessage(
-      assistant([
-        { type: "tool_use", name: "Read", input: { file_path: "/src/foo.ts" } },
-      ]),
+      assistant([{ type: "tool_use", name: "Read", input: { file_path: "/src/foo.ts" } }]),
       { ...baseConfig, mode: "full" },
       "chat-uuid",
     );
@@ -112,7 +116,10 @@ describe("renderMessage — assistant", () => {
 
   test("--no-thinking flag overrides mode", () => {
     const { markdown } = renderMessage(
-      assistant([{ type: "thinking", text: "사고" }, { type: "text", text: "out" }]),
+      assistant([
+        { type: "thinking", text: "사고" },
+        { type: "text", text: "out" },
+      ]),
       { ...baseConfig, includeThinking: false },
       "chat-uuid",
     );
@@ -134,14 +141,20 @@ describe("renderMessage — assistant", () => {
 
   test("token_budget shown only in full mode", () => {
     const standard = renderMessage(
-      assistant([{ type: "token_budget", budget: 1000 }, { type: "text", text: "x" }]),
+      assistant([
+        { type: "token_budget", budget: 1000 },
+        { type: "text", text: "x" },
+      ]),
       baseConfig,
       "chat-uuid",
     ).markdown;
     expect(standard).not.toContain("token");
 
     const full = renderMessage(
-      assistant([{ type: "token_budget", budget: 1000 }, { type: "text", text: "x" }]),
+      assistant([
+        { type: "token_budget", budget: 1000 },
+        { type: "text", text: "x" },
+      ]),
       { ...baseConfig, mode: "full" },
       "chat-uuid",
     ).markdown;
@@ -154,7 +167,12 @@ describe("renderMessage — attachments", () => {
     const msg: ExportMessage = {
       ...human("see file"),
       attachments: [
-        { file_name: "note.txt", file_size: 11, file_type: "txt", extracted_content: "hello world" },
+        {
+          file_name: "note.txt",
+          file_size: 11,
+          file_type: "txt",
+          extracted_content: "hello world",
+        },
       ],
     };
     const { markdown, externalAttachments } = renderMessage(msg, baseConfig, "chat-uuid");

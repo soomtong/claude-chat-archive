@@ -24,9 +24,7 @@ describe("parseConfig", () => {
   });
 
   test("invalid mode throws", () => {
-    expect(() => parseConfig(["./export", "--mode", "weird"])).toThrow(
-      /mode must be/,
-    );
+    expect(() => parseConfig(["./export", "--mode", "weird"])).toThrow(/mode must be/);
   });
 
   test("--no-thinking flips includeThinking", () => {
@@ -45,9 +43,7 @@ describe("parseConfig", () => {
   });
 
   test("negative attachment-threshold throws", () => {
-    expect(() =>
-      parseConfig(["./export", "--attachment-threshold", "-1"]),
-    ).toThrow(/threshold/);
+    expect(() => parseConfig(["./export", "--attachment-threshold", "-1"])).toThrow(/threshold/);
   });
 
   test("--scope chats", () => {

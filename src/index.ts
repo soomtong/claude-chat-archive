@@ -33,9 +33,7 @@ export async function archive(cfg: Config): Promise<RunStats> {
         stats.attachmentsMissing += r.missing;
       } catch (err) {
         stats.chatsSkipped += 1;
-        process.stderr.write(
-          `[skip] chat ${c.uuid}: ${(err as Error).message}\n`,
-        );
+        process.stderr.write(`[skip] chat ${c.uuid}: ${(err as Error).message}\n`);
       }
     }
   }
@@ -48,9 +46,7 @@ export async function archive(cfg: Config): Promise<RunStats> {
         await writeProject(p, cfg);
         stats.projectsWritten += 1;
       } catch (err) {
-        process.stderr.write(
-          `[skip] project ${p.uuid}: ${(err as Error).message}\n`,
-        );
+        process.stderr.write(`[skip] project ${p.uuid}: ${(err as Error).message}\n`);
       }
     }
   }

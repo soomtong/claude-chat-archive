@@ -28,10 +28,7 @@ function deriveTitle(conv: ExportConversation): string {
   return `untitled-${conv.uuid.slice(0, 8)}`;
 }
 
-export function conversationFilename(
-  conv: ExportConversation,
-  used: Set<string>,
-): string {
+export function conversationFilename(conv: ExportConversation, used: Set<string>): string {
   const date = isoDate(conv.created_at);
   const titleRaw = deriveTitle(conv);
   const titleClean = sanitizeFilename(titleRaw).slice(0, MAX_TITLE_LENGTH);

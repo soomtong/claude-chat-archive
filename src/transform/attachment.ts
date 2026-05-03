@@ -2,10 +2,7 @@ import type { ExportAttachment, ExportFile } from "../types.ts";
 
 export type Placement = "inline" | "external";
 
-export function decideAttachmentPlacement(
-  a: ExportAttachment,
-  thresholdBytes: number,
-): Placement {
+export function decideAttachmentPlacement(a: ExportAttachment, thresholdBytes: number): Placement {
   return a.extracted_content.length >= thresholdBytes ? "external" : "inline";
 }
 

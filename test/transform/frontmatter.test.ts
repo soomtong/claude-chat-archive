@@ -8,9 +8,7 @@ describe("toYamlFrontmatter", () => {
       title: "hello",
       message_count: 4,
     });
-    expect(out).toBe(
-      "---\nuuid: abc\ntitle: hello\nmessage_count: 4\n---\n",
-    );
+    expect(out).toBe("---\nuuid: abc\ntitle: hello\nmessage_count: 4\n---\n");
   });
 
   test("quotes strings containing colons", () => {
@@ -25,9 +23,7 @@ describe("toYamlFrontmatter", () => {
 
   test("renders multiline string with literal block scalar", () => {
     const out = toYamlFrontmatter({ summary: "line1\nline2\nline3" });
-    expect(out).toBe(
-      "---\nsummary: |\n  line1\n  line2\n  line3\n---\n",
-    );
+    expect(out).toBe("---\nsummary: |\n  line1\n  line2\n  line3\n---\n");
   });
 
   test("renders array of strings inline", () => {

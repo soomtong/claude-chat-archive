@@ -2,22 +2,26 @@
   "name": "claude-chat-archive",
   "version": "0.1.0",
   "description": "Convert Claude.ai chat export into a navigable markdown archive.",
-  "keywords": ["claude", "claude-ai", "archive", "markdown", "export", "obsidian"],
+  "keywords": [
+    "archive",
+    "claude",
+    "claude-ai",
+    "export",
+    "markdown",
+    "obsidian"
+  ],
   "license": "MIT",
   "author": "soomtong",
-  "type": "module",
   "bin": {
     "claude-chat-archive": "./dist/cli.js"
   },
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
   "files": [
     "dist",
     "README.md"
   ],
-  "engines": {
-    "node": ">=20"
-  },
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "build": "bun build --target=node --outdir=dist src/cli.ts src/index.ts && bun run build:types",
     "build:types": "tsc --emitDeclarationOnly --declaration --outDir dist",
@@ -27,8 +31,11 @@
   },
   "devDependencies": {
     "@types/bun": "latest",
-    "oxlint": "latest",
     "oxfmt": "latest",
+    "oxlint": "latest",
     "typescript": "^5"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }

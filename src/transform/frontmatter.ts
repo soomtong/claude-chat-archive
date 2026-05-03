@@ -1,13 +1,7 @@
-export type FrontmatterValue =
-  | string
-  | number
-  | boolean
-  | string[]
-  | null
-  | undefined;
+export type FrontmatterValue = string | number | boolean | string[] | null | undefined;
 
 // Leading characters that have special YAML meaning and force quoting.
-const LEADING_SPECIAL = /^[\-?:,\[\]{}#&*!|>'"%@`]/;
+const LEADING_SPECIAL = /^[-?:,[\]{}#&*!|>'"%@`]/;
 // Substrings that force quoting wherever they appear.
 const NEEDS_QUOTE_ANYWHERE = /: |#( |$)/;
 
@@ -40,9 +34,7 @@ function renderArray(values: string[]): string {
   return `[${values.join(", ")}]`;
 }
 
-export function toYamlFrontmatter(
-  fields: Record<string, FrontmatterValue>,
-): string {
+export function toYamlFrontmatter(fields: Record<string, FrontmatterValue>): string {
   const lines: string[] = ["---"];
   for (const [key, value] of Object.entries(fields)) {
     if (value === null || value === undefined) continue;

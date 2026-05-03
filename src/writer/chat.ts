@@ -34,9 +34,7 @@ export async function writeChat(
     missing += msg.files.length;
   }
 
-  const titleFromFilename = filename
-    .replace(/^\d{4}-\d{2}-\d{2} /, "")
-    .replace(/\.md$/, "");
+  const titleFromFilename = filename.replace(/^\d{4}-\d{2}-\d{2} /, "").replace(/\.md$/, "");
   const title = conv.name?.trim() || titleFromFilename;
 
   const fm = toYamlFrontmatter({
@@ -64,12 +62,7 @@ export async function writeChat(
   await mkdir(chatsDir, { recursive: true });
   await writeFile(join(chatsDir, filename), document, "utf8");
   for (const att of externalAttachments) {
-    await writeExternalAttachment(
-      attachmentsDir,
-      att.chatUuid,
-      att.fileName,
-      att.content,
-    );
+    await writeExternalAttachment(attachmentsDir, att.chatUuid, att.fileName, att.content);
   }
   return stats;
 }

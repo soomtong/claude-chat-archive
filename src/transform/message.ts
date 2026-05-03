@@ -1,14 +1,5 @@
-import type {
-  Config,
-  ExportContent,
-  ExportMessage,
-  ContentMode,
-} from "../types.ts";
-import {
-  decideAttachmentPlacement,
-  renderAttachment,
-  renderMissingFile,
-} from "./attachment.ts";
+import type { Config, ExportContent, ExportMessage, ContentMode } from "../types.ts";
+import { decideAttachmentPlacement, renderAttachment, renderMissingFile } from "./attachment.ts";
 
 export interface ExternalAttachment {
   chatUuid: string;
@@ -51,7 +42,10 @@ function shouldShowTokenBudget(cfg: Config): boolean {
 }
 
 function renderThinking(text: string): string {
-  const body = text.split("\n").map((l) => `> ${l}`).join("\n");
+  const body = text
+    .split("\n")
+    .map((l) => `> ${l}`)
+    .join("\n");
   return `> [!note]- 사고 과정\n${body}`;
 }
 
@@ -81,11 +75,7 @@ function renderTokenBudget(content: ExportContent): string {
   return `<!-- token_budget: ${content.budget ?? 0} -->`;
 }
 
-export function renderMessage(
-  msg: ExportMessage,
-  cfg: Config,
-  chatUuid: string,
-): RenderedMessage {
+export function renderMessage(msg: ExportMessage, cfg: Config, chatUuid: string): RenderedMessage {
   const blocks: string[] = [];
   blocks.push(`${HEADERS[msg.sender]} · ${formatTimestamp(msg.created_at)}`);
 
