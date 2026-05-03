@@ -6,7 +6,10 @@ export type FrontmatterValue =
   | null
   | undefined;
 
-const NEEDS_QUOTING = /[:#&*!|>'"%@`,\[\]{}?\-]/;
+// Leading characters that have special YAML meaning and force quoting.
+const LEADING_SPECIAL = /^[\-?:,\[\]{}#&*!|>'"%@`]/;
+// Substrings that force quoting wherever they appear.
+const NEEDS_QUOTE_ANYWHERE = /: |#( |$)/;
 
 function renderScalar(value: string | number | boolean): string {
   if (typeof value === "boolean" || typeof value === "number") {
@@ -19,7 +22,13 @@ function renderScalar(value: string | number | boolean): string {
       .join("\n");
     return `|\n${indented}`;
   }
-  if (NEEDS_QUOTING.test(value) || value !== value.trim()) {
+  const needsQuotes =
+    LEADING_SPECIAL.test(value) ||
+    NEEDS_QUOTE_ANYWHERE.test(value) ||
+    value.includes('"') ||
+    value !== value.trim() ||
+    value === "";
+  if (needsQuotes) {
     const escaped = value.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
     return `"${escaped}"`;
   }
