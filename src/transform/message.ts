@@ -1,6 +1,7 @@
 import type { Config, ExportContent, ExportMessage, ContentMode } from "../types.ts";
 import { decideAttachmentPlacement, renderAttachment, renderMissingFile } from "./attachment.ts";
 import { formatKnownTool } from "./tool-formatter.ts";
+import { formatKnownToolResult, shouldSkipToolResult } from "./tool-result-formatter.ts";
 
 export interface ExternalAttachment {
   chatUuid: string;
@@ -114,6 +115,8 @@ function renderToolUse(content: ExportContent, mode: ContentMode): string {
 }
 
 function renderToolResult(content: ExportContent, mode: ContentMode): string {
+  const known = formatKnownToolResult(content, mode);
+  if (known) return known;
   if (mode === "full") {
     const json = JSON.stringify(content.content ?? null, null, 2);
     return ["```json", "// tool_result", json, "```"].join("\n");
@@ -155,7 +158,9 @@ export function renderMessage(msg: ExportMessage, cfg: Config, chatUuid: string)
         blocks.push(renderToolUse(c, cfg.mode));
       }
     } else if (c.type === "tool_result") {
-      if (shouldShowTools(cfg)) blocks.push(renderToolResult(c, cfg.mode));
+      if (shouldShowTools(cfg) && !shouldSkipToolResult(c)) {
+        blocks.push(renderToolResult(c, cfg.mode));
+      }
     } else if (c.type === "token_budget") {
       if (shouldShowTokenBudget(cfg)) blocks.push(renderTokenBudget(c));
     }
