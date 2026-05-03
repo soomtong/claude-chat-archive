@@ -1,5 +1,6 @@
 import type { Config, ExportContent, ExportMessage, ContentMode } from "../types.ts";
 import { decideAttachmentPlacement, renderAttachment, renderMissingFile } from "./attachment.ts";
+import { formatKnownTool } from "./tool-formatter.ts";
 
 export interface ExternalAttachment {
   chatUuid: string;
@@ -102,6 +103,8 @@ function renderCreatedFileLink(extracted: ExtractedFile, chatUuid: string): stri
 
 function renderToolUse(content: ExportContent, mode: ContentMode): string {
   const name = content.name ?? "tool";
+  const known = formatKnownTool(content);
+  if (known) return known;
   if (mode === "full") {
     const json = JSON.stringify(content.input ?? {}, null, 2);
     return ["```json", `// tool_use: ${name}`, json, "```"].join("\n");
