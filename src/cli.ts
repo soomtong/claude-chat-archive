@@ -46,7 +46,8 @@ async function main(argv: string[]): Promise<number> {
         `projects: ${stats.projectsWritten}/${stats.projectsTotal}, ` +
         `attachments: ${stats.attachmentsInline} inline, ` +
         `${stats.attachmentsExternal} external, ` +
-        `${stats.attachmentsMissing} missing\n`,
+        `${stats.attachmentsMissing} missing, ` +
+        `created files: ${stats.createdFilesWritten}\n`,
     );
     return 0;
   } catch (err) {

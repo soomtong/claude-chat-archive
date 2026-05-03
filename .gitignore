@@ -4,6 +4,7 @@ node_modules
 # output
 out
 dist
+output/
 *.tgz
 
 # source (user export data — not the test fixtures)

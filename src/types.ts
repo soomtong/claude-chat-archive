@@ -91,4 +91,5 @@ export interface RunStats {
   attachmentsInline: number;
   attachmentsExternal: number;
   attachmentsMissing: number;
+  createdFilesWritten: number;
 }

@@ -17,6 +17,7 @@ export async function archive(cfg: Config): Promise<RunStats> {
     attachmentsInline: 0,
     attachmentsExternal: 0,
     attachmentsMissing: 0,
+    createdFilesWritten: 0,
   };
 
   const used = new Set<string>();
@@ -31,6 +32,7 @@ export async function archive(cfg: Config): Promise<RunStats> {
         stats.attachmentsInline += r.inline;
         stats.attachmentsExternal += r.external;
         stats.attachmentsMissing += r.missing;
+        stats.createdFilesWritten += r.created;
       } catch (err) {
         stats.chatsSkipped += 1;
         process.stderr.write(`[skip] chat ${c.uuid}: ${(err as Error).message}\n`);

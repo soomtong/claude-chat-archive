@@ -207,3 +207,98 @@ describe("renderMessage — attachments", () => {
     expect(markdown).toContain("📎 [missing] image.png");
   });
 });
+
+describe("renderMessage — created files (create_file)", () => {
+  test("extracts create_file content and emits link in standard mode", () => {
+    const msg = assistant([
+      {
+        type: "tool_use",
+        name: "create_file",
+        input: {
+          path: "/home/claude/note.md",
+          file_text: "# hello\nbody",
+          description: "Create a note",
+        },
+      },
+    ]);
+    const { markdown, createdFiles } = renderMessage(msg, baseConfig, "chat-uuid");
+    expect(createdFiles).toHaveLength(1);
+    expect(createdFiles[0]).toEqual({
+      chatUuid: "chat-uuid",
+      fileName: "note.md",
+      content: "# hello\nbody",
+    });
+    expect(markdown).toContain("📝 [note.md](../created/chat-uuid/note.md)");
+    expect(markdown).toContain("Create a note");
+    expect(markdown).not.toContain("file_text");
+  });
+
+  test("extracts artifacts content with create command", () => {
+    const msg = assistant([
+      {
+        type: "tool_use",
+        name: "artifacts",
+        input: {
+          id: "demo",
+          type: "application/vnd.ant.code",
+          title: "Demo Code",
+          command: "create",
+          content: "console.log('hi')",
+        },
+      },
+    ]);
+    const { markdown, createdFiles } = renderMessage(msg, baseConfig, "chat-uuid");
+    expect(createdFiles).toHaveLength(1);
+    expect(createdFiles[0]!.fileName).toBe("Demo Code");
+    expect(createdFiles[0]!.content).toBe("console.log('hi')");
+    expect(markdown).toContain("📝 [Demo Code](../created/chat-uuid/Demo Code)");
+  });
+
+  test("artifacts with non-create command falls back to default tool render", () => {
+    const msg = assistant([
+      {
+        type: "tool_use",
+        name: "artifacts",
+        input: { id: "demo", command: "view" },
+      },
+    ]);
+    const { markdown, createdFiles } = renderMessage(msg, baseConfig, "chat-uuid");
+    expect(createdFiles).toHaveLength(0);
+    expect(markdown).toContain("🔧");
+  });
+
+  test("created file extracted even in minimal mode (preservation)", () => {
+    const msg = assistant([
+      {
+        type: "tool_use",
+        name: "create_file",
+        input: { path: "/tmp/x.txt", file_text: "data" },
+      },
+    ]);
+    const { markdown, createdFiles } = renderMessage(
+      msg,
+      { ...baseConfig, mode: "minimal" },
+      "chat-uuid",
+    );
+    expect(createdFiles).toHaveLength(1);
+    // minimal mode hides tool blocks → markdown does not include link either
+    expect(markdown).not.toContain("📝");
+  });
+
+  test("--no-tools still preserves created files but hides link", () => {
+    const msg = assistant([
+      {
+        type: "tool_use",
+        name: "create_file",
+        input: { path: "/tmp/x.txt", file_text: "data" },
+      },
+    ]);
+    const { markdown, createdFiles } = renderMessage(
+      msg,
+      { ...baseConfig, includeTools: false },
+      "chat-uuid",
+    );
+    expect(createdFiles).toHaveLength(1);
+    expect(markdown).not.toContain("📝");
+  });
+});
