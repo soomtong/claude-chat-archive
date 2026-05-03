@@ -1,6 +1,6 @@
 {
   "name": "claude-chat-archive",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Convert Claude.ai chat export into a navigable markdown archive.",
   "keywords": [
     "archive",
@@ -13,15 +13,15 @@
   "license": "MIT",
   "author": "soomtong",
   "bin": {
-    "claude-chat-archive": "./dist/cli.js"
+    "claude-chat-archive": "dist/cli.js"
   },
   "files": [
     "dist",
     "README.md"
   ],
   "type": "module",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "bun build --target=node --outdir=dist src/cli.ts src/index.ts && bun run build:types",
     "build:types": "tsc --emitDeclarationOnly --declaration --outDir dist",
