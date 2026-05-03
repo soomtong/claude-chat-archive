@@ -1,0 +1,14 @@
+{
+  "uuid": "proj-1",
+  "name": "Test Project",
+  "description": "A demo project",
+  "is_private": false,
+  "is_starter_project": false,
+  "prompt_template": "",
+  "created_at": "2026-01-01T00:00:00Z",
+  "updated_at": "2026-01-02T00:00:00Z",
+  "creator": { "uuid": "u1", "full_name": "soomtong" },
+  "docs": [
+    { "uuid": "d1", "filename": "guide.md", "content": "# guide" }
+  ]
+}
